@@ -1,13 +1,3 @@
-
-/**
- * Copyright (c) Mark Matten (mark_matten@hotmail.com) 2011-13
- * Part of the dbfit-teradata software.
- * This software is subject to the provisions of
- * the GNU General Public License Version 2.0 (GPL).
- * See LICENCE.txt for details.
- */
-
-
 package dbfit.environment;
 import java.math.BigDecimal;
 import java.sql.CallableStatement;
@@ -129,7 +119,7 @@ public class OracleEnvironment extends AbstractDbEnvironment {
     public Map<String, DbParameterAccessor> getAllProcedureParameters(String procName) throws SQLException
     {
 		String[] qualifiers = NameNormaliser.normaliseName(procName).split("\\.");
-		String cols=" argument_name, data_type, data_length,  IN_OUT, sequence ";
+		String cols=" argument_name, CASE data_type WHEN 'PL/SQL BOOLEAN' THEN 'BOOLEAN' ELSE data_type END AS data_type, data_length,  IN_OUT, sequence ";
 		String qry = "select "+ cols+"  from all_arguments where data_level=0 and ";
 		if (qualifiers.length== 3) {
 			qry += " owner=? and package_name=? and object_name=? ";
@@ -201,6 +191,7 @@ public class OracleEnvironment extends AbstractDbEnvironment {
 			String paramName=rs.getString(1);			
 			if (paramName==null) paramName="";
 			String dataType = rs.getString(2);
+			System.out.println("OracleEnvironment: readIntoParams: dataType: " + dataType);
 //			int length = rs.getInt(3);
 			String direction = rs.getString(4);
 			int paramDirection;
@@ -232,6 +223,7 @@ public class OracleEnvironment extends AbstractDbEnvironment {
 	private static List<String> refCursorTypes = Arrays.asList(new String[] { "REF" });
 	// Bupa additions.
 	private static List<String> binaryTypes = Arrays.asList(new String[] { "RAW","BLOB" });
+	private static List<String> booleanTypes = Arrays.asList(new String[] { "BOOLEAN" });
 	
 	private static String normaliseTypeName(String dataType) {
 		dataType = dataType.toUpperCase().trim();
@@ -252,11 +244,14 @@ public class OracleEnvironment extends AbstractDbEnvironment {
 		if (timestampTypes.contains(dataType)) return java.sql.Types.TIMESTAMP;
 		// Bupa addition.
 		if (binaryTypes.contains(dataType)) return java.sql.Types.BLOB;
+		//if (booleanTypes.contains(dataType)) return java.sql.Types.BOOLEAN;
+		if (booleanTypes.contains(dataType)) return java.sql.Types.INTEGER;
 		
 		throw new UnsupportedOperationException("Type " + dataType + " is not supported");
 	}
 	public Class getJavaClass(String dataType) {
 		dataType = normaliseTypeName(dataType);
+		System.out.println("OracleEnvironment: getJavaClass: normalised type name: " + dataType);
 		if (stringTypes.contains(dataType) ) return String.class;
 		if (decimalTypes.contains(dataType) )return BigDecimal.class;
 		if (dateTypes.contains(dataType) ) return java.sql.Date.class;
@@ -264,6 +259,7 @@ public class OracleEnvironment extends AbstractDbEnvironment {
 		if (timestampTypes.contains(dataType)) return java.sql.Timestamp.class;
 		// Bupa addition.
 		if (binaryTypes.contains(dataType)) return java.sql.Blob.class;
+		if (booleanTypes.contains(dataType)) return Boolean.class;
 		
 		throw new UnsupportedOperationException("Type " + dataType + " is not supported");
 	}
