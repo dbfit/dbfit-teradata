@@ -2,10 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="dbfit"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
-	<classpathentry kind="lib" path="C:/MOI/Configuration/Tools/FitNesse/dbfit-complete-20080822_DEV1/lib/classes12.zip"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Fitlibrary20070225"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Fitnesse20080812"/>
 	<classpathentry kind="lib" path="C:/MOI/Configuration/Tools/FitNesse/dbfit-complete-20080822_DEV1/lib/terajdbc4.jar"/>
-	<classpathentry kind="lib" path="C:/MOI/Configuration/Tools/FitNesse/dbfit-complete-20080822_DEV1/lib/ojdbc5.zip"/>
+	<classpathentry kind="lib" path="ojdbc14.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
