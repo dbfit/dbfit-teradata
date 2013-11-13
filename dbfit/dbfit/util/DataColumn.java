@@ -22,7 +22,14 @@ public class DataColumn {
 		System.out.println("DataColumn: DataColumn(ResultSetMetaData, int)");
 		this.name=r.getColumnName(columnIndex);
 		this.javaClassName=r.getColumnClassName(columnIndex);
-		this.dbTypeName=r.getColumnTypeName(columnIndex);
+		//MM: allow for the OpenLink driver for Progress not populating this column.
+		if ((r.getColumnTypeName(columnIndex) == null) || (r.getColumnTypeName(columnIndex) == "")) {
+			//MM: use the java.sql.types constant value instead.
+			this.dbTypeName = (new Integer(r.getColumnType(columnIndex))).toString();
+		}
+		else {
+			this.dbTypeName=r.getColumnTypeName(columnIndex);
+		}
 		System.out.println("DataColumn: name: "+this.name+", javaClassName: "+this.javaClassName+", dbTypeName: "+this.dbTypeName);		
 	}
 	public String getDbTypeName() {

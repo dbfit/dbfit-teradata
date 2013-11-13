@@ -43,7 +43,9 @@ public class Insert extends fit.Fixture {
 		PreparedStatement cs=
 				(environment.supportsOuputOnInsert())?
 							environment.getConnection().prepareCall(ins):
-							environment.getConnection().prepareStatement(ins,Statement.RETURN_GENERATED_KEYS);
+							//environment.getConnection().prepareStatement(ins,Statement.RETURN_GENERATED_KEYS);
+							//MM: fix this - this looks like a typo!
+							environment.getConnection().prepareStatement(ins,Statement.NO_GENERATED_KEYS);
 		System.out.println("Insert: BuildInsertCommand: cs instanceof CallableStatement?: "+(cs instanceof CallableStatement));
 		for (int i=0; i<accessors.length; i++){
 			accessors[i].bindTo(this, cs, i+1);

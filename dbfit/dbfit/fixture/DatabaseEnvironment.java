@@ -33,6 +33,9 @@ public class DatabaseEnvironment extends fitlibrary.SequenceFixture{
         		else if ("TERADATA".equals(requestedEnv)){
         			oe=new TeradataEnvironment();
         		}
+        		else if ("PROGRESSOPENLINK".equals(requestedEnv)){
+        			oe=new ProgressOpenLinkEnvironment();
+        		}
         		else throw new UnsupportedOperationException("DB Environment not supported:"+args[0]);
                 DbEnvironmentFactory.setDefaultEnvironment(oe);
 //                setSystemUnderTest(oe);

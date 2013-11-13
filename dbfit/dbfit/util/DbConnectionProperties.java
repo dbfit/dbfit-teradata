@@ -40,7 +40,15 @@ public class DbConnectionProperties {
 				val = "";
 			} else {
 				key = keyval[0].trim().toLowerCase();
-				val = keyval[1].trim();
+				//MM: fix to allow values containing equals chars.
+				//val = keyval[1].trim();
+				val = "";
+				for (int i = 1; i <= (keyval.length - 1); i++) {
+					if (i >= 2) {
+						val += "=";
+					}
+					val += keyval[i];
+				}
 			}
 			if ("username".equals(key)) {
 				props.Username = val;
